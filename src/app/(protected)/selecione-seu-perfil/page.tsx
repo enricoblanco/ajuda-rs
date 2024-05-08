@@ -1,9 +1,7 @@
+import { SelecionePerfil } from "@/components/selecione-perfil/selecione-perfil";
+
 const SelecioneSeuPerfilPage = () => {
-  return (
-    <div>
-      <h1>Selecione seu perfil</h1>
-    </div>
-  );
+  return <SelecionePerfil />;
 };
 
 export default SelecioneSeuPerfilPage;

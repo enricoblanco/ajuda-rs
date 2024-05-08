@@ -18,7 +18,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <div className="flex flex-col min-h-screen text-center items-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50  to-slate-200">
+            {children}
+          </div>
+        </body>
       </html>
     </ClerkProvider>
   );
