@@ -44,7 +44,7 @@ export const Navbar = () => {
       name: haveRole
         ? `Meus ${role === Role.AJUDANTE ? "Serviços" : "Pedidos"}`
         : "Selecionar Perfil",
-      href: haveRole ? "/meus" : "/criar-perfil",
+      href: haveRole ? "/meus" : "/selecione-seu-perfil",
     },
     { name: "Perfil", href: "/user-profile" },
   ];

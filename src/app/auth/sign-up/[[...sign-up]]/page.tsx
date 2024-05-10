@@ -1,7 +1,7 @@
 import { SignUp } from "@clerk/nextjs";
 
 const SignUpPage = () => {
-    return ( <SignUp />);
-}
- 
+  return <SignUp path="/auth/sign-up" />;
+};
+
 export default SignUpPage;
