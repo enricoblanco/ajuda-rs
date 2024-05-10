@@ -5,7 +5,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/clerk-react";
-import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
+import {
+  SheetTrigger,
+  SheetContent,
+  Sheet,
+  SheetClose,
+} from "@/components/ui/sheet";
 
 const navigation = [
   { name: "Início", href: "/" },
@@ -48,22 +53,18 @@ export const Navbar = () => {
           <div className="grid gap-2 py-6">
             {isAuth
               ? loggedNavigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    className={navbarMobileItemClasses}
-                    href={item.href}
-                  >
-                    {item.name}
-                  </Link>
+                  <SheetClose asChild key={item.name}>
+                    <Link className={navbarMobileItemClasses} href={item.href}>
+                      {item.name}
+                    </Link>
+                  </SheetClose>
                 ))
               : navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    className={navbarMobileItemClasses}
-                    href={item.href}
-                  >
-                    {item.name}
-                  </Link>
+                  <SheetClose asChild key={item.name}>
+                    <Link className={navbarMobileItemClasses} href={item.href}>
+                      {item.name}
+                    </Link>
+                  </SheetClose>
                 ))}
           </div>
         </SheetContent>

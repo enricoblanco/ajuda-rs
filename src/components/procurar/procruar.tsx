@@ -13,7 +13,7 @@ export const Procurar = ({ tipo }: ProcurarProps) => {
   const [search, setSearch] = useState("");
   const router = useRouter();
   return (
-    <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 mx-16 md:mx-44">
+    <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 mx-12 md:mx-44">
       <Input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
