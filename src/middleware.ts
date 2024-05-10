@@ -2,6 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 const isProtectedRoute = createRouteMatcher([
   '/selecione-seu-perfil',
+  '/criar-post'
 ]);
 
 export default clerkMiddleware((auth, req) => {
