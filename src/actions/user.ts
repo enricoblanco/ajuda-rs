@@ -98,3 +98,19 @@ export const getUserRole = async (clerkId: string) => {
   }
 }
 
+export const getUserNome = async (clerkId: string) => {
+  try {
+    await db.$connect();
+    const user = await getUserByClerkId(clerkId);
+
+    if (!user) {
+      return {error: "Usuário não encontrado"};
+    }
+
+    return user.name;
+    
+  } catch (error) {
+    throw new Error("Erro ao buscar nome do usuário: " + error);
+  }
+}
+

@@ -13,13 +13,13 @@ export const SelecionePerfil = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   return (
-    <Card className="shadow-md mx-4">
+    <Card className="shadow-md md:mx-44 mx-12 py-4">
       <CardContent>
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-8">
           <h1 className="text-2xl font-semibold">Selecione seu perfil</h1>
-          <div className="flex flex-row gap-x-4">
-            <div className="flex flex-col">
-              <Button
+          <div className="flex flex-col gap-y-4 justify-center">
+            <div className="flex flex-col bg-slate-800 text-white md:mx-64 py-4 hover:bg-slate-600 rounded-lg transition-all">
+              <button
                 onClick={() =>
                   setUserRole(user.user?.id as string, Role.AJUDANTE).then(
                     (res) => {
@@ -34,11 +34,12 @@ export const SelecionePerfil = () => {
                 className="text-lg font-semibold"
               >
                 Quero ajudar
-              </Button>
+              </button>
               <p className="text-xs">Quero ajudar prestando algum serviço</p>
             </div>
-            <div className="flex flex-col">
-              <Button
+            <hr />
+            <div className="flex flex-col bg-slate-800 text-white md:mx-64 py-4 hover:bg-slate-600 rounded-lg transition-all">
+              <button
                 onClick={() =>
                   setUserRole(user.user?.id as string, Role.AJUDADO).then(
                     (res) => {
@@ -53,7 +54,7 @@ export const SelecionePerfil = () => {
                 className="text-lg font-semibold"
               >
                 Preciso de ajuda
-              </Button>
+              </button>
               <p className="text-xs">Preciso de algum serviço</p>
             </div>
           </div>

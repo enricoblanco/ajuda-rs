@@ -23,6 +23,7 @@ import { useUser } from "@clerk/nextjs";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Role } from "@prisma/client";
 import { createPost } from "@/actions/post";
+import { useRouter } from "next/navigation";
 
 export const CriarPostForm = () => {
   const { user } = useUser();
@@ -30,6 +31,7 @@ export const CriarPostForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSucces] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
@@ -49,16 +51,16 @@ export const CriarPostForm = () => {
         setError(data.error);
         setSucces(data.success);
       });
+      router.push("/");
     });
-    console.log(values);
   };
 
   return (
-    <Card>
+    <Card className="shadow-md md:mx-44 mx-12 py-4">
       <CardContent>
         <Form {...form}>
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="space-y-4">
+            <div className="space-y-4 md:text-left text-center">
               <FormField
                 control={form.control}
                 name="title"
@@ -75,8 +77,8 @@ export const CriarPostForm = () => {
                         className="text-xs"
                         disabled={isPending}
                         {...field}
-                        placeholder="John Doe"
-                        type="Name"
+                        placeholder="Título do anúncio"
+                        type="text"
                       />
                     </FormControl>
                     <FormMessage />
@@ -98,7 +100,7 @@ export const CriarPostForm = () => {
                       <Input
                         disabled={isPending}
                         {...field}
-                        className="text-xs"
+                        className="text-xs pb-20 pt-4 md:pb-32"
                         placeholder="Descreva seu serviço aqui"
                         type="text"
                       />

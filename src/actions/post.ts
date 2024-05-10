@@ -73,3 +73,78 @@ export const getAllPosts = async () => {
     console.error(err)
   }
 }
+
+export const getAllPedidos = async () => {
+  try {
+    await db.$connect()
+    const posts = await db.post.findMany({
+      where: {
+        role: Role.AJUDADO
+      }
+    })
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getAllServicos = async () => {
+  try {
+    await db.$connect()
+    const posts = await db.post.findMany({
+      where: {
+        role: Role.AJUDANTE
+      }
+    })
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const searchServicos = async (search: string) => {
+  try {
+    await db.$connect()
+    const posts = await db.post.findMany({
+      where: {
+        role: Role.AJUDANTE,
+        OR: [
+          {
+            title: {
+              contains: search
+            }
+          },
+          {
+            body: {
+              contains: search
+            }
+          }
+        ]
+      }
+    })
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+export const searchPedidos = async (search: string) => {
+  try {
+    await db.$connect();
+    const posts = await getAllPedidos();
+
+    if (!posts || posts.length === 0) { // Verifica se não há posts ou se o array de posts está vazio
+      return [{ error: 'Nenhum pedido encontrado' }]; // Retorna um array com um objeto de erro
+    }
+
+    // Filtra os posts cujo título ou corpo contenham a string de pesquisa (ignorando maiúsculas e minúsculas)
+    const filteredPosts = posts.filter(post => 
+      post.title.toLowerCase().includes(search.toLowerCase()) || 
+      post.body.toLowerCase().includes(search.toLowerCase())
+    );
+
+    return filteredPosts; // Retorna os posts filtrados
+  } catch (err) {
+    console.error(err);
+    return [{ error: 'Erro ao buscar pedidos' }]; // Retorna um array com um objeto de erro em caso de falha
+  }
+};

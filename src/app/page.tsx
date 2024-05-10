@@ -10,10 +10,10 @@ export default async function Home() {
     return user?.name as string;
   };
   return (
-    <div className="mt-6 flex flex-col gap-y-4 w-full">
+    <div className="my-6 flex flex-col gap-y-4 w-full">
       {posts?.map((post) => {
         return (
-          <div className="mx-32" key={post.id}>
+          <div className="mx-12 md:mx-44" key={post.id}>
             <PostComponent
               body={post.body}
               title={post.title}
