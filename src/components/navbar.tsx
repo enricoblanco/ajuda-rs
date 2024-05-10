@@ -9,6 +9,8 @@ import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
 
 const navigation = [
   { name: "Início", href: "/" },
+  { name: "Pedidos", href: "/posts/pedidos" },
+  { name: "Serviços", href: "/posts/servicos" },
   { name: "Entrar", href: "/auth/sign-in" },
   { name: "Cadastro", href: "/auth/sign-up" },
 ];
