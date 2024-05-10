@@ -17,8 +17,8 @@ model User {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   clerkId String   @unique
   email   String
+  name    String
   role    Role?
-  name    String?
   address Address?
   Post    Post[]
 }
@@ -32,12 +32,14 @@ model Comment {
 
 model Post {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String    @unique
   title    String
   body     String
+  contact  String
+  role     Role
   author   User      @relation(fields: [authorId], references: [id])
   authorId String    @db.ObjectId
   comments Comment[]
+  date     DateTime  @default(now())
 }
 
 enum Role {

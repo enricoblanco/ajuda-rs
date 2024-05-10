@@ -10,7 +10,8 @@ export async function createUser(user: any) {
     const newUser = await db.user.create({
         data: {
             clerkId: user.clerkId,
-            email: user.email
+            email: user.email,
+            name: user.name,
         }
     })
     return JSON.parse(JSON.stringify(newUser))
@@ -29,7 +30,7 @@ export async function getUserById(userId: string) {
             id: userId
         }
     })
-    return JSON.parse(JSON.stringify(user))
+    return user
     
   } catch (err) {
       console.error(err)
@@ -80,3 +81,20 @@ export const setUserRole = async (clerkId: string, role: Role) => {
     throw new Error("Erro ao atualizar usuário: " + error);
   }
 }
+
+export const getUserRole = async (clerkId: string) => {
+  try {
+    await db.$connect();
+    const user = await getUserByClerkId(clerkId);
+
+    if (!user) {
+      return {error: "Usuário não encontrado"};
+    }
+
+    return user.role;
+    
+  } catch (error) {
+    throw new Error("Erro ao buscar perfil do usuário: " + error);
+  }
+}
+

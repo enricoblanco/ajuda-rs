@@ -5,9 +5,13 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { useUser } from "@clerk/nextjs";
 import { Role } from "@prisma/client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const SelecionePerfil = () => {
   const user = useUser();
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   return (
     <Card className="shadow-md mx-4">
       <CardContent>
@@ -17,7 +21,15 @@ export const SelecionePerfil = () => {
             <div className="flex flex-col">
               <Button
                 onClick={() =>
-                  setUserRole(user.user?.id as string, Role.AJUDANTE)
+                  setUserRole(user.user?.id as string, Role.AJUDANTE).then(
+                    (res) => {
+                      if (res.error) {
+                        setError(res.error);
+                      } else {
+                        router.push("/criar-post");
+                      }
+                    }
+                  )
                 }
                 className="text-lg font-semibold"
               >
@@ -28,7 +40,15 @@ export const SelecionePerfil = () => {
             <div className="flex flex-col">
               <Button
                 onClick={() =>
-                  setUserRole(user.user?.id as string, Role.AJUDADO)
+                  setUserRole(user.user?.id as string, Role.AJUDADO).then(
+                    (res) => {
+                      if (res.error) {
+                        setError(res.error);
+                      } else {
+                        router.push("/criar-post");
+                      }
+                    }
+                  )
                 }
                 className="text-lg font-semibold"
               >
@@ -39,7 +59,11 @@ export const SelecionePerfil = () => {
           </div>
         </div>
       </CardContent>
-      <CardFooter>Footer</CardFooter>
+      <CardFooter>
+        <div className="flex justify-center text-xs text-red-500 w-full">
+          {error}
+        </div>
+      </CardFooter>
     </Card>
   );
 };
