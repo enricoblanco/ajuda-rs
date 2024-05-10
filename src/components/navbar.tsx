@@ -61,7 +61,10 @@ export const Navbar = () => {
   return (
     <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6 bg-white">
       <Sheet>
-        <div className="w-full md:w-auto flex justify-between md:justify-start">
+        <div
+          data-auth={isAuth}
+          className="w-full data-[auth=true]:justify-end md:w-auto flex justify-between md:justify-start"
+        >
           {!isAuth && (
             <Button onClick={() => router.push("/auth/sign-in")}>
               Publicar
@@ -88,10 +91,10 @@ export const Navbar = () => {
                     </Link>
                   </SheetClose>
                 ))}
-                <SheetClose>
+                <SheetClose className="flex justify-start">
                   <button
                     onClick={() => signOut(() => router.push("/"))}
-                    className="text-lg font-semibold text-left"
+                    className="text-lg font-semibold"
                   >
                     Sair
                   </button>
