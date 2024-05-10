@@ -66,7 +66,10 @@ export const Navbar = () => {
           className="w-full data-[auth=true]:justify-end md:w-auto flex justify-between md:justify-start"
         >
           {!isAuth && (
-            <Button onClick={() => router.push("/auth/sign-in")}>
+            <Button
+              className="md:hidden flex"
+              onClick={() => router.push("/auth/sign-in")}
+            >
               Publicar
             </Button>
           )}

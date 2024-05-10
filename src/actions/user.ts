@@ -114,3 +114,29 @@ export const getUserNome = async (clerkId: string) => {
   }
 }
 
+export const updateUser = async (clerkId: string, name: string, email: string) => {
+  try {
+    await db.$connect();
+    const user = await getUserByClerkId(clerkId);
+
+    if (!user) {
+      return {error: "Usuário não encontrado"};
+    }
+
+    await db.user.update({
+      where: {
+        clerkId: clerkId,
+      },
+      data: {
+        name: name,
+        email: email,
+      },
+    });
+
+    return {success: "Usuário atualizado com sucesso"};
+    
+  } catch (error) {
+    throw new Error("Erro ao atualizar usuário: " + error);
+  }
+}
+

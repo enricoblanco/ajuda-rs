@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server'
 
 import { NextResponse } from 'next/server'
-import { createUser } from '@/actions/user'
+import { createUser, updateUser } from '@/actions/user'
  
 export async function POST(req: Request) {
  
@@ -74,6 +74,19 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({message: "New user created", user: newUser})
+
+  } else if(eventType === 'user.updated') {
+    const {id, email_addresses, first_name, last_name} = evt.data
+    const user = {
+     clerkId : id,
+     email: email_addresses[0].email_address,
+     name: first_name + ' ' + last_name
+    }
+
+
+    const updatedUser = await updateUser(user.clerkId, user.name, user.email)
+
+    return NextResponse.json({message: "User updated", user: updatedUser})
   }
  
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
