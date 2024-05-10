@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server'
 
 import { NextResponse } from 'next/server'
-import { createUser, updateUser } from '@/actions/user'
+import { createUser, deleteUser, updateUser } from '@/actions/user'
  
 export async function POST(req: Request) {
  
@@ -87,6 +87,12 @@ export async function POST(req: Request) {
     const updatedUser = await updateUser(user.clerkId, user.name, user.email)
 
     return NextResponse.json({message: "User updated", user: updatedUser})
+  } else if(eventType === 'user.deleted') {
+    const {id} = evt.data
+
+    // Delete user from database
+    await deleteUser(id as string)
+    return NextResponse.json({message: "User deleted", userId: id})
   }
  
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)

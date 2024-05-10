@@ -140,3 +140,25 @@ export const updateUser = async (clerkId: string, name: string, email: string) =
   }
 }
 
+export const deleteUser = async (clerkId: string) => {
+  try {
+    await db.$connect();
+    const user = await getUserByClerkId(clerkId);
+
+    if (!user) {
+      return {error: "Usuário não encontrado"};
+    }
+
+    await db.user.delete({
+      where: {
+        clerkId: clerkId,
+      },
+    });
+
+    return {success: "Usuário deletado com sucesso"};
+    
+  } catch (error) {
+    throw new Error("Erro ao deletar usuário: " + error);
+  }
+}
+
