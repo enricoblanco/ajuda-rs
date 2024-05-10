@@ -3,9 +3,8 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
+import { SignedOut, UserButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/clerk-react";
-import { useUser } from "@clerk/nextjs";
 import {
   SheetTrigger,
   SheetContent,
@@ -15,11 +14,15 @@ import {
 import { useUserRole } from "@/hooks/useUserRole";
 import { Role } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const { userId } = useAuth();
   const role = useUserRole(userId as string);
   const [haveRole, setHaveRole] = useState(false);
+  const { signOut } = useClerk();
+  const router = useRouter();
 
   useEffect(() => {
     if (role === Role.AJUDANTE || role === Role.AJUDADO) setHaveRole(true);
@@ -58,36 +61,55 @@ export const Navbar = () => {
   return (
     <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6 bg-white">
       <Sheet>
-        <SheetTrigger asChild>
-          <Button className="lg:hidden" size="icon" variant="outline">
-            <MenuIcon className="h-6 w-6" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
+        <div className="w-full md:w-auto flex justify-between md:justify-start">
+          {!isAuth && (
+            <Button onClick={() => router.push("/auth/sign-in")}>
+              Publicar
+            </Button>
+          )}
+          <SheetTrigger asChild>
+            <Button className="lg:hidden" size="icon" variant="outline">
+              <MenuIcon className="h-6 w-6" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+        </div>
+        <SheetContent side="right">
           <Link className="mr-6 hidden lg:flex" href="#">
             AjudaRS
           </Link>
           <div className="grid gap-2 py-6">
-            {isAuth
-              ? loggedNavigation.map((item) => (
-                  <SheetClose asChild key={item.name}>
-                    <Link className={navbarMobileItemClasses} href={item.href}>
-                      {item.name}
-                    </Link>
-                  </SheetClose>
-                ))
-              : navigation.map((item) => (
+            {isAuth ? (
+              <>
+                {loggedNavigation.map((item) => (
                   <SheetClose asChild key={item.name}>
                     <Link className={navbarMobileItemClasses} href={item.href}>
                       {item.name}
                     </Link>
                   </SheetClose>
                 ))}
+                <SheetClose>
+                  <button
+                    onClick={() => signOut(() => router.push("/"))}
+                    className="text-lg font-semibold text-left"
+                  >
+                    Sair
+                  </button>
+                </SheetClose>
+              </>
+            ) : (
+              navigation.map((item) => (
+                <SheetClose asChild key={item.name}>
+                  <Link className={navbarMobileItemClasses} href={item.href}>
+                    {item.name}
+                  </Link>
+                </SheetClose>
+              ))
+            )}
           </div>
         </SheetContent>
       </Sheet>
-      <Link className="mr-6 hidden lg:flex font-bold" href="#">
+      <Link className="mr-6 hidden lg:flex font-bold w-full" href="#">
         AjudaRS
       </Link>
       <nav className="ml-auto hidden lg:flex gap-6">
