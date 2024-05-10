@@ -1,8 +1,8 @@
 'use server'
 
 import { db } from "@/lib/db";
-import { getUserByClerkId } from "./user";
-import { CreatePostSchema } from "@/schemas";
+import { getUserByClerkId, getUserById } from "./user";
+import { CreatePostSchema, UpdatePostSchema } from "@/schemas";
 import { z } from "zod";
 import { Role } from "@prisma/client";
 
@@ -10,7 +10,7 @@ export const createPost = async (values: z.infer<typeof CreatePostSchema>, clerk
   const validatedFields = CreatePostSchema.safeParse(values)
   if (!validatedFields.success) {
     return {
-      errors: 'Invalid fields'
+      errors: 'Campos inválidos'
     }
   }
 
@@ -127,6 +127,7 @@ export const searchServicos = async (search: string) => {
     console.error(err)
   }
 }
+
 export const searchPedidos = async (search: string) => {
   try {
     await db.$connect();
@@ -148,3 +149,115 @@ export const searchPedidos = async (search: string) => {
     return [{ error: 'Erro ao buscar pedidos' }]; // Retorna um array com um objeto de erro em caso de falha
   }
 };
+
+export const getPostsByUser = async (clerkId: string) => {
+  try {
+    await db.$connect()
+    const user = await getUserByClerkId(clerkId)
+
+    if(!user) {
+      return([{error: 'Usuário não encontrado'}])
+    }
+
+    const posts = db.post.findMany({
+      where:{
+        authorId: user.id
+      }
+    })
+
+    return posts
+    
+  } catch (err) {
+      console.error(err)
+  }
+}
+
+export const deletePost = async (postId: string, userId: string) => {
+  try {
+    await db.$connect()
+    const user = await getUserById(userId)
+
+    if(!user) {
+      return({error: 'Usuário não encontrado'})
+    }
+
+    const post = await db.post.findUnique({
+      where: {
+        id: postId
+      }
+    })
+
+    if(!post) {
+      return({error: 'Post não encontrado'})
+    }
+
+    if(post.authorId !== user.id) {
+      return({error: 'Usuário não autorizado'})
+    }
+
+    await db.post.delete({
+      where: {
+        id: postId
+      }
+    })
+
+    return({success: 'Post deletado com sucesso'})
+    
+  } catch (err) {
+      console.error(err)
+  }
+}
+
+const getPostById = async (postId: string) => {
+  try {
+    await db.$connect()
+    const post = await db.post.findUnique({
+      where: {
+        id: postId
+      }
+    })
+    return post
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const updatePost = async (postId: string, clerkId: string, values: z.infer<typeof UpdatePostSchema>) => {
+  const validatedFields = CreatePostSchema.safeParse(values)
+  if (!validatedFields.success) {
+    return {
+      errors: 'Campos inválidos'  }
+  }
+
+  const { title, body, contact } = validatedFields.data
+
+  const post = await getPostById(postId)
+
+  if(!post) {
+    return({error: 'Post não encontrado'})
+  }
+
+  const user = await getUserByClerkId(clerkId);
+
+    if (!user) {
+      return {error: "Usuário não encontrado"};
+    }
+
+    await db.post.update({
+      where: {
+        id: postId
+      },
+      data: {
+        title,
+        body,
+        contact,
+        authorId: user.id,
+        role: user.role as Role
+      }
+    })
+
+    return {
+      success: 'Post atualizado com sucesso'
+    }
+
+}

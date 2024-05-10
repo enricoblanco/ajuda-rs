@@ -7,16 +7,7 @@ import {
 import { getUserById } from "@/actions/user";
 import { PostComponent } from "@/components/post";
 import { Procurar } from "@/components/procurar/procruar";
-import { Key } from "react";
-
-interface PostInterface {
-  id: Key;
-  body: string;
-  title: string;
-  contact: string;
-  date: Date;
-  authorId: string;
-}
+import { PostInterface } from "./types";
 
 export const PostPageComponent = async ({
   searchParams,

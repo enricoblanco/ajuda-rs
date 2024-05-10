@@ -5,37 +5,55 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/clerk-react";
+import { useUser } from "@clerk/nextjs";
 import {
   SheetTrigger,
   SheetContent,
   Sheet,
   SheetClose,
 } from "@/components/ui/sheet";
-
-const navigation = [
-  { name: "Início", href: "/" },
-  { name: "Pedidos", href: "/posts/pedidos" },
-  { name: "Serviços", href: "/posts/servicos" },
-  { name: "Entrar", href: "/auth/sign-in" },
-  { name: "Cadastro", href: "/auth/sign-up" },
-];
-
-const loggedNavigation = [
-  { name: "Início", href: "/" },
-  { name: "Pedidos", href: "/posts/pedidos" },
-  { name: "Serviços", href: "/posts/servicos" },
-  { name: "Perfil", href: "/user-profile" },
-];
-
-const nvabarItemClasses =
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50";
-
-const navbarMobileItemClasses =
-  "flex w-full items-center py-2 text-lg font-semibold";
+import { useUserRole } from "@/hooks/useUserRole";
+import { Role } from "@prisma/client";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
   const { userId } = useAuth();
+  const role = useUserRole(userId as string);
+  const [haveRole, setHaveRole] = useState(false);
+
+  useEffect(() => {
+    if (role === Role.AJUDANTE || role === Role.AJUDADO) setHaveRole(true);
+    else setHaveRole(false);
+  }, [role]);
+
   const isAuth = !!userId;
+
+  const navigation = [
+    { name: "Início", href: "/" },
+    { name: "Pedidos", href: "/posts/pedidos" },
+    { name: "Serviços", href: "/posts/servicos" },
+    { name: "Entrar", href: "/auth/sign-in" },
+    { name: "Cadastro", href: "/auth/sign-up" },
+  ];
+
+  const loggedNavigation = [
+    { name: "Início", href: "/" },
+    { name: "Pedidos", href: "/posts/pedidos" },
+    { name: "Serviços", href: "/posts/servicos" },
+    {
+      name: haveRole
+        ? `Meus ${role === Role.AJUDANTE ? "Serviços" : "Pedidos"}`
+        : "Selecionar Perfil",
+      href: haveRole ? "/meus" : "/criar-perfil",
+    },
+    { name: "Perfil", href: "/user-profile" },
+  ];
+
+  const nvabarItemClasses =
+    "group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50";
+
+  const navbarMobileItemClasses =
+    "flex w-full items-center py-2 text-lg font-semibold";
 
   return (
     <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6 bg-white">

@@ -15,5 +15,5 @@ export const useUserRole = (userClerkId: string) => {
     fetchRole();
   }, [userClerkId]);
 
-  return { role };
+  return role;
 };
