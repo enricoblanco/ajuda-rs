@@ -105,24 +105,20 @@ export const getAllServicos = async () => {
 export const searchServicos = async (search: string) => {
   try {
     await db.$connect()
-    const posts = await db.post.findMany({
-      where: {
-        role: Role.AJUDANTE,
-        OR: [
-          {
-            title: {
-              contains: search
-            }
-          },
-          {
-            body: {
-              contains: search
-            }
-          }
-        ]
-      }
-    })
-    return posts
+
+    const posts = await getAllServicos();
+
+    if(!posts || posts.length === 0) {
+      return [{error: 'Nenhum serviço encontrado'}]
+    }
+
+      const filteredPosts = posts.filter(post => 
+      post.title.toLowerCase().includes(search.toLowerCase()) || 
+      post.body.toLowerCase().includes(search.toLowerCase())
+    );
+
+  
+    return filteredPosts
   } catch (err) {
     console.error(err)
   }

@@ -14,6 +14,6 @@ export const UpdatePostSchema = z.object({
   body: z.string().min(1, { message: "Descrição é obrigatório" }),
   contact: z
     .string()
-    .min(11, { message: "Telefone é obrigatório" })
+    .min(11, { message: "Telefone inválido (Mín. 11 dígitos)" })
     .max(13, { message: "Telefone inválido (Máx. 13 dígitos)" }),
 });

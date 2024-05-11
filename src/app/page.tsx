@@ -12,13 +12,7 @@ export default async function Home() {
   return (
     <div className="my-6 flex flex-col gap-y-6 w-full">
       <div className="flex flex-col text-middle md:text-left mx-12 md:mx-48 font-bold">
-        <div className="text-xl">
-          {" "}
-          <span className="whitespace-nowrap">
-            Conectando Solidariedade:
-          </span>{" "}
-          AjudaRS
-        </div>
+        <div className="text-xl">AjudaRS</div>
         <div className="text-sm font-normal">
           AjudaRS conecta pessoas afetadas por enchentes no RS a voluntários
           dispostos a ajudar gratuitamente.
