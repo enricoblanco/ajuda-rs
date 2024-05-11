@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { SignedOut, UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { useAuth } from "@clerk/clerk-react";
 import {
   SheetTrigger,
@@ -31,6 +31,10 @@ export const Navbar = () => {
   }, [role]);
 
   const isAuth = !!userId;
+
+  const handleSupportClick = () => {
+    window.location.href = "mailto:ajuda.alagamentos.rs@gmail.com";
+  };
 
   const navigation = [
     { name: "Início", href: "/" },
@@ -85,9 +89,9 @@ export const Navbar = () => {
           <Link className="mr-6 hidden lg:flex" href="#">
             AjudaRS
           </Link>
-          <div className="grid gap-2 py-6">
+          <div className="grid gap-2 py-6 h-full relative">
             {isAuth ? (
-              <>
+              <div>
                 {loggedNavigation.map((item) => (
                   <SheetClose asChild key={item.name}>
                     <Link className={navbarMobileItemClasses} href={item.href}>
@@ -103,7 +107,13 @@ export const Navbar = () => {
                     Sair
                   </button>
                 </SheetClose>
-              </>
+                <button
+                  onClick={handleSupportClick}
+                  className="absolute bottom-10 underline underline-offset-2"
+                >
+                  Suporte
+                </button>
+              </div>
             ) : (
               navigation.map((item) => (
                 <SheetClose asChild key={item.name}>

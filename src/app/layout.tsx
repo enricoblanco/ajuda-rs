@@ -5,6 +5,7 @@ import { ptBR } from "@clerk/localizations";
 import { Navbar } from "@/components/navbar";
 
 import "./globals.css";
+import { Footer } from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
           <div className="flex flex-col min-h-screen text-center items-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50  to-slate-200">
             <Navbar />
             {children}
+            <Footer />
           </div>
         </body>
       </html>
