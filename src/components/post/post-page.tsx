@@ -46,19 +46,23 @@ export const PostPageComponent = async ({
   return (
     <div className="my-6 flex flex-col gap-y-4 w-full">
       <Procurar tipo={tipo} />
-      {searched?.map((post) => {
-        return (
-          <div className="mx-12 md:mx-44" key={post.id}>
-            <PostComponent
-              body={post.body}
-              title={post.title}
-              contact={post.contact}
-              date={post.date}
-              nome={getUserName(post.authorId) as unknown as string}
-            />
-          </div>
-        );
-      })}
+      {searched
+        ?.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        ) // Ordenar os posts por data
+        .map((post) => {
+          return (
+            <div className="mx-12 md:mx-44" key={post.id}>
+              <PostComponent
+                body={post.body}
+                title={post.title}
+                contact={post.contact}
+                date={post.date}
+                nome={getUserName(post.authorId) as unknown as string}
+              />
+            </div>
+          );
+        })}
     </div>
   );
 };
