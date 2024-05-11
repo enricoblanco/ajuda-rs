@@ -16,6 +16,7 @@ import { Role } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const Navbar = () => {
   const { userId } = useAuth();
@@ -115,8 +116,17 @@ export const Navbar = () => {
           </div>
         </SheetContent>
       </Sheet>
-      <Link className="mr-6 hidden lg:flex font-bold w-full" href="#">
+      <Link
+        className="mr-6 hidden lg:flex font-bold w-full lg:flex-row justify-start gap-x-2 items-center"
+        href="#"
+      >
         AjudaRS
+        <Image
+          alt="Bandeira do Rio Grande do Sul"
+          src="/svg/rsflagSVG.svg"
+          width={20}
+          height={40}
+        />
       </Link>
       <nav className="ml-auto hidden lg:flex gap-6">
         {isAuth
