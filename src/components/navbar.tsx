@@ -99,7 +99,7 @@ export const Navbar = () => {
                     </Link>
                   </SheetClose>
                 ))}
-                <SheetClose className="flex justify-start">
+                <SheetClose className="flex justify-start py-2">
                   <button
                     onClick={() => signOut(() => router.push("/"))}
                     className="text-lg font-semibold"
@@ -115,13 +115,21 @@ export const Navbar = () => {
                 </button>
               </div>
             ) : (
-              navigation.map((item) => (
-                <SheetClose asChild key={item.name}>
-                  <Link className={navbarMobileItemClasses} href={item.href}>
-                    {item.name}
-                  </Link>
-                </SheetClose>
-              ))
+              <div>
+                {navigation.map((item) => (
+                  <SheetClose asChild key={item.name}>
+                    <Link className={navbarMobileItemClasses} href={item.href}>
+                      {item.name}
+                    </Link>
+                  </SheetClose>
+                ))}
+                <button
+                  onClick={handleSupportClick}
+                  className="absolute bottom-10 underline underline-offset-2"
+                >
+                  Suporte
+                </button>
+              </div>
             )}
           </div>
         </SheetContent>
