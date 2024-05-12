@@ -1,4 +1,4 @@
-import { getAllPosts, getAllPostsNumber } from "@/actions/post";
+import { getAllPosts, getAllPostsNumber, getPosts } from "@/actions/post";
 import { getUserByClerkId, getUserById } from "@/actions/user";
 import { PaginationComponent } from "@/components/pagination/pagination";
 import { PostComponent } from "@/components/post";
@@ -6,7 +6,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 
 export default async function Home() {
-  const posts = await getAllPosts(0, 10);
+  const posts = await getPosts(0, 10);
   const totalPosts = await getAllPostsNumber();
   const userClerk = await currentUser();
   const user = await getUserByClerkId(userClerk?.id as string);

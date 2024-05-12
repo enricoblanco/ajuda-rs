@@ -1,4 +1,4 @@
-import { getAllPosts, getAllPostsNumber } from "@/actions/post";
+import { getAllPosts, getAllPostsNumber, getPosts } from "@/actions/post";
 import { getUserByClerkId, getUserById } from "@/actions/user";
 import { PaginationComponent } from "@/components/pagination/pagination";
 import { PostComponent } from "@/components/post";
@@ -10,12 +10,8 @@ const PostPage = async ({
   searchParams: { page: string };
 }) => {
   const { page } = searchParams;
-  const posts = await getAllPosts((parseInt(page) - 1) * 10, 10);
+  const posts = await getPosts((parseInt(page) - 1) * 10, 10);
   const postsNumber = await getAllPostsNumber();
-
-  const nextPages = (postsNumber as number) - (parseInt(page) - 1) * 10;
-
-  console.log(postsNumber, nextPages);
 
   const userClerk = await currentUser();
   const user = await getUserByClerkId(userClerk?.id as string);

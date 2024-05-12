@@ -5,12 +5,12 @@ const PostPage = ({
   searchParams,
 }: {
   params: { tipo: "pedidos" | "servicos" };
-  searchParams: { search: string };
+  searchParams: { search: string; page: string };
 }) => {
   const { tipo } = params;
-  const { search } = searchParams;
+  const { search, page } = searchParams;
 
-  return <PostPageComponent searchParams={{ search }} tipo={tipo} />;
+  return <PostPageComponent searchParams={{ search, page }} tipo={tipo} />;
 };
 
 export default PostPage;

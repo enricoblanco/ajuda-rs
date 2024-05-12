@@ -38,16 +38,16 @@ export const Navbar = () => {
 
   const navigation = [
     { name: "Início", href: "/" },
-    { name: "Pedidos", href: "/posts/pedidos" },
-    { name: "Serviços", href: "/posts/servicos" },
+    { name: "Pedidos", href: "/posts/pedidos?page=1" },
+    { name: "Serviços", href: "/posts/servicos?page=1" },
     { name: "Entrar", href: "/auth/sign-in" },
     { name: "Cadastro", href: "/auth/sign-up" },
   ];
 
   const loggedNavigation = [
     { name: "Início", href: "/" },
-    { name: "Pedidos", href: "/posts/pedidos" },
-    { name: "Serviços", href: "/posts/servicos" },
+    { name: "Pedidos", href: "/posts/pedidos?page=1" },
+    { name: "Serviços", href: "/posts/servicos?page=1" },
     {
       name: haveRole
         ? `Meus ${role === Role.AJUDANTE ? "Serviços" : "Pedidos"}`

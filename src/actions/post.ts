@@ -64,17 +64,51 @@ export async function getPostByUserRole(clerkId: string) {
   }
 }
 
-export const getAllPosts = async (skip: number, take: number) => {
+export const getAllPosts = async () => {
   try {
     await db.$connect()
     const posts = await db.post.findMany({
-      skip: skip, 
-      take: 10,
         orderBy: {
           date: 'desc'
         }
       }
     )
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getPosts = async (skip: number, take: number) => {
+  try {
+    await db.$connect()
+    const posts = await db.post.findMany({
+      skip: skip, 
+      take: take,
+        orderBy: {
+          date: 'desc'
+        }
+      }
+    )
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getPedidos = async ( skip: number, take: number ) => {
+  try {
+    await db.$connect()
+    const posts = await db.post.findMany({
+      skip: skip,
+      take: take,
+      orderBy: {
+          date: 'desc'
+        },
+      where: {
+        role: Role.AJUDADO
+      }
+    })
     return posts
   } catch (err) {
     console.error(err)
@@ -90,6 +124,25 @@ export const getAllPedidos = async () => {
         },
       where: {
         role: Role.AJUDADO
+      }
+    })
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getServicos = async (skip : number, take: number) => {
+  try {
+    await db.$connect()
+    const posts = await db.post.findMany({
+      skip: skip,
+      take: take,
+      orderBy: {
+          date: 'desc'
+        },
+      where: {
+        role: Role.AJUDANTE
       }
     })
     return posts
@@ -122,7 +175,7 @@ export const searchServicos = async (search: string) => {
     const posts = await getAllServicos();
 
     if(!posts || posts.length === 0) {
-      return [{error: 'Nenhum serviço encontrado'}]
+      return null
     }
 
       const filteredPosts = posts.filter(post => 
@@ -142,8 +195,8 @@ export const searchPedidos = async (search: string) => {
     await db.$connect();
     const posts = await getAllPedidos();
 
-    if (!posts || posts.length === 0) { // Verifica se não há posts ou se o array de posts está vazio
-      return [{ error: 'Nenhum pedido encontrado' }]; // Retorna um array com um objeto de erro
+    if (!posts || posts.length === 0) { // Verifica se não há posts 
+      return null 
     }
 
     // Filtra os posts cujo título ou corpo contenham a string de pesquisa (ignorando maiúsculas e minúsculas)
@@ -155,7 +208,7 @@ export const searchPedidos = async (search: string) => {
     return filteredPosts; // Retorna os posts filtrados
   } catch (err) {
     console.error(err);
-    return [{ error: 'Erro ao buscar pedidos' }]; // Retorna um array com um objeto de erro em caso de falha
+    return null;
   }
 };
 
@@ -275,6 +328,34 @@ export const getAllPostsNumber = async () => {
   try {
     await db.$connect()
     const posts = await db.post.count()
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getServicosPostsNumber = async () => {
+  try {
+    await db.$connect()
+    const posts = await db.post.count({
+      where: {
+        role: Role.AJUDANTE
+      }
+    })
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getPedidosPostsNumber = async () => {
+  try {
+    await db.$connect()
+    const posts = await db.post.count({
+      where: {
+        role: Role.AJUDADO
+      }
+    })
     return posts
   } catch (err) {
     console.error(err)

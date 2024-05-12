@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Pagination,
@@ -10,7 +11,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
-import { useEffect, useState } from "react";
 
 interface PaginationProps {
   isLastPage?: boolean;
@@ -29,9 +29,11 @@ export const PaginationComponent = ({
 
   const pageNumber = parseInt(currentPage);
 
+  const totalPages = Math.ceil(totalPosts / 10);
+
   const getTotalNextPages = () => {
     if (pageNumber === 1) {
-      return Math.ceil(totalPosts / 10);
+      return totalPages;
     } else {
       return Math.ceil((totalPosts - 10 * (pageNumber - 1)) / 10);
     }
@@ -44,26 +46,20 @@ export const PaginationComponent = ({
     totalPages: number
   ): number[] => {
     const visiblePages = 3; // Número de páginas visíveis no componente de paginação
-    const halfVisible = Math.floor(visiblePages / 2);
-    let startPage = currentPage - halfVisible;
-    let endPage = currentPage + halfVisible;
 
-    // Verificar limites das páginas visíveis
-    if (startPage < 1) {
-      startPage = 1;
-      endPage = Math.min(totalPages, visiblePages);
-    } else if (endPage > totalPages) {
+    let startPage = currentPage; // Alteração aqui
+    let endPage = startPage + visiblePages - 1;
+
+    // Se a página final for maior que o número total de páginas, ajuste as páginas
+    if (endPage > totalPages) {
       endPage = totalPages;
       startPage = Math.max(1, endPage - visiblePages + 1);
     }
 
-    // Ajustar para incluir a primeira e a última página, se necessário
-    if (endPage - startPage + 1 < visiblePages) {
-      if (startPage === 1) {
-        endPage = Math.min(totalPages, startPage + visiblePages - 1);
-      } else if (endPage === totalPages) {
-        startPage = Math.max(1, endPage - visiblePages + 1);
-      }
+    // Se a página inicial for menor que 1, ajuste as páginas
+    if (startPage < 1) {
+      startPage = 1;
+      endPage = Math.min(totalPages, visiblePages); // Atualizar a página final
     }
 
     // Criar um array com os números das páginas a serem exibidos
@@ -88,7 +84,7 @@ export const PaginationComponent = ({
   return (
     <Pagination>
       <PaginationContent>
-        {!(currentPage === "1") && totalPosts > 30 && (
+        {currentPage !== "1" && totalPosts > 30 && (
           <PaginationItem>
             <PaginationPrevious onClick={() => router.back()} />
           </PaginationItem>
@@ -108,7 +104,7 @@ export const PaginationComponent = ({
             </PaginationLink>
           </PaginationItem>
         ))}
-        {totalNextPages > 2 && (
+        {totalNextPages > 3 && totalPages > 3 && (
           <>
             <PaginationItem>
               <PaginationEllipsis />

@@ -21,7 +21,11 @@ export const Procurar = ({ tipo }: ProcurarProps) => {
       />
       <Button
         onClick={() => {
-          router.push(`/posts/${tipo}?search=${search}`);
+          if (search === "") {
+            router.push(`/posts/${tipo}?page=1`);
+          } else {
+            router.push(`/posts/${tipo}?search=${search}`);
+          }
         }}
       >
         Procurar
