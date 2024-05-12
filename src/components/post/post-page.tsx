@@ -49,7 +49,7 @@ export const PostPageComponent = async ({
 
   const searched = await searchFunc(search, tipo);
 
-  const postsNumber = await getAllPostsNumber();
+  const postsNumber = await getAllPostsNumber(tipo);
 
   return (
     <>

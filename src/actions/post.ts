@@ -324,9 +324,25 @@ export const updatePost = async (postId: string, clerkId: string, values: z.infe
 
 }
 
-export const getAllPostsNumber = async () => {
+export const getAllPostsNumber = async (type ?: string) => {
   try {
     await db.$connect()
+    if(type === 'pedidos') {
+      const posts = await db.post.count({
+        where: {
+          role: Role.AJUDADO
+        }
+      })
+      return posts
+    }
+    if(type === 'servicos') {
+      const posts = await db.post.count({
+        where: {
+          role: Role.AJUDANTE
+        }
+      })
+      return posts
+    }
     const posts = await db.post.count()
     return posts
   } catch (err) {

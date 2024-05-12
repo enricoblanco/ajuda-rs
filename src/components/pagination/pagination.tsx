@@ -86,7 +86,9 @@ export const PaginationComponent = ({
       <PaginationContent>
         {currentPage !== "1" && totalPosts > 30 && (
           <PaginationItem>
-            <PaginationPrevious onClick={() => router.back()} />
+            <PaginationPrevious
+              onClick={() => router.push(`/${page}?page=${pageNumber - 1}`)}
+            />
           </PaginationItem>
         )}
         {pages?.map((number) => (
