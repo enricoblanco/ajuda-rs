@@ -41,6 +41,8 @@ export default async function Home() {
               title={post.title}
               contact={post.contact}
               date={post.date}
+              id={post.id}
+              authorId={post.authorId}
               nome={getUserName(post.authorId) as unknown as string}
               isEditable={user?.id === post.authorId}
             />

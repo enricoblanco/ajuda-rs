@@ -4,7 +4,7 @@ import { convertDateToBr } from "@/functions/convertDateToBr";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import { telMask } from "@/functions/telMask";
 import { Pencil2Icon, TrashIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EditarPostForm } from "./editar-post";
 import { deletePost } from "@/actions/post";
 import { useRouter } from "next/navigation";
@@ -76,11 +76,9 @@ export const PostComponent = ({
             className="cursor-pointer hover:text-slate-600 transition-all"
           />
           <TrashIcon
-            onClick={async () => {
-              console.log(id, authorId);
-              await deletePost(id as string, authorId as string).then(() => {
-                window.location.reload();
-              });
+            onClick={() => {
+              deletePost(id as string, authorId as string);
+              router.refresh();
             }}
             width={"18"}
             height={"18"}

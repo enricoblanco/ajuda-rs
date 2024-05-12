@@ -30,6 +30,7 @@ const PostPage = async ({
               title={post.title}
               contact={post.contact}
               date={post.date}
+              id={post.id}
               nome={getUserName(post.authorId) as unknown as string}
               isEditable={user?.id === post.authorId}
             />

@@ -6,7 +6,6 @@ import * as z from "zod";
 import {
   FormControl,
   FormItem,
-  FormLabel,
   FormMessage,
   FormField,
   Form,
@@ -20,7 +19,7 @@ import { Card, CardContent } from "../ui/card";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
 import { useUser } from "@clerk/nextjs";
-import { createPost, updatePost } from "@/actions/post";
+import { updatePost } from "@/actions/post";
 import { useRouter } from "next/navigation";
 
 interface EditarPostFormProps {
@@ -42,7 +41,6 @@ export const EditarPostForm = ({
   const [error, setError] = useState<string | undefined>("");
   const [success, setSucces] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof UpdatePostSchema>>({
     resolver: zodResolver(UpdatePostSchema),

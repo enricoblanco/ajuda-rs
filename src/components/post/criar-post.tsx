@@ -22,6 +22,7 @@ import { FormSuccess } from "./form-success";
 import { useUser } from "@clerk/nextjs";
 import { Role } from "@prisma/client";
 import { createPost } from "@/actions/post";
+import { useRouter } from "next/navigation";
 
 interface CriarPostFormProps {
   tipo: "AJUDANTE" | "AJUDADO";
@@ -32,6 +33,8 @@ export const CriarPostForm = ({ tipo }: CriarPostFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSucces] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
@@ -50,8 +53,12 @@ export const CriarPostForm = ({ tipo }: CriarPostFormProps) => {
       createPost(values, user?.id as string).then((data) => {
         setError(data.error);
         setSucces(data.success);
+
+        if (data.success) {
+          form.reset();
+          router.refresh();
+        }
       });
-      window.location.replace("/");
     });
   };
 
