@@ -3,11 +3,20 @@ import { getUserByClerkId, getUserById } from "@/actions/user";
 import { PaginationComponent } from "@/components/pagination/pagination";
 import { PostComponent } from "@/components/post";
 import { currentUser } from "@clerk/nextjs/server";
-import Image from "next/image";
 
-export default async function Home() {
-  const posts = await getAllPosts(0, 10);
-  const totalPosts = await getAllPostsNumber();
+const PostPage = async ({
+  searchParams,
+}: {
+  searchParams: { page: string };
+}) => {
+  const { page } = searchParams;
+  const posts = await getAllPosts((parseInt(page) - 1) * 10, 10);
+  const postsNumber = await getAllPostsNumber();
+
+  const nextPages = (postsNumber as number) - (parseInt(page) - 1) * 10;
+
+  console.log(postsNumber, nextPages);
+
   const userClerk = await currentUser();
   const user = await getUserByClerkId(userClerk?.id as string);
 
@@ -15,24 +24,8 @@ export default async function Home() {
     const user = await getUserById(id);
     return user?.name as string;
   };
-
   return (
     <div className="my-6 flex flex-col gap-y-6 w-full pb-12">
-      <div className="flex flex-col text-middle md:text-left mx-12 md:mx-48 font-bold">
-        <div className="flex flex-row justify-center items-center md:justify-start gap-x-2">
-          <div className="text-xl">AjudaRS</div>
-          <Image
-            alt="Bandeira do Rio Grande do Sul"
-            src="/svg/rsflagSVG.svg"
-            width={20}
-            height={40}
-          />
-        </div>
-        <div className="text-sm font-normal">
-          AjudaRS conecta pessoas afetadas por enchentes no RS a voluntários
-          dispostos a ajudar gratuitamente.
-        </div>
-      </div>
       <div className="flex flex-col gap-y-4">
         {posts?.map((post) => (
           <div className="mx-12 md:mx-44" key={post.id}>
@@ -48,12 +41,14 @@ export default async function Home() {
         ))}
         <div className="flex absolute bottom-6 w-full justify-center">
           <PaginationComponent
-            totalPosts={totalPosts as number}
+            totalPosts={postsNumber as number}
             page="posts"
-            currentPage={"1"}
+            currentPage={page}
           />
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default PostPage;

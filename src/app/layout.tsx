@@ -32,7 +32,7 @@ export default function RootLayout({
     <ClerkProvider localization={ptBR}>
       <html lang="pt-br">
         <body className={inter.className}>
-          <div className="flex flex-col min-h-screen text-center items-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50  to-slate-200">
+          <div className="flex flex-col min-h-screen text-center items-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 to-slate-200 relative">
             <Navbar />
             {children}
             <Footer />

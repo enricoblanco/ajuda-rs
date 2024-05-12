@@ -66,7 +66,7 @@ export const PostComponent = ({
         </div>
       </CardContent>
       {isEditable && (
-        <CardFooter className="flex flex-row gap-x-3">
+        <CardFooter className="flex flex-row gap-x-3 w-full justify-end">
           <Pencil2Icon
             onClick={() => {
               setIsEditing(true);
@@ -77,6 +77,7 @@ export const PostComponent = ({
           />
           <TrashIcon
             onClick={async () => {
+              console.log(id, authorId);
               await deletePost(id as string, authorId as string).then(() => {
                 window.location.reload();
               });

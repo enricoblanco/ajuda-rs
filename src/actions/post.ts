@@ -64,10 +64,17 @@ export async function getPostByUserRole(clerkId: string) {
   }
 }
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (skip: number, take: number) => {
   try {
     await db.$connect()
-    const posts = await db.post.findMany()
+    const posts = await db.post.findMany({
+      skip: skip, 
+      take: 10,
+        orderBy: {
+          date: 'desc'
+        }
+      }
+    )
     return posts
   } catch (err) {
     console.error(err)
@@ -78,6 +85,9 @@ export const getAllPedidos = async () => {
   try {
     await db.$connect()
     const posts = await db.post.findMany({
+      orderBy: {
+          date: 'desc'
+        },
       where: {
         role: Role.AJUDADO
       }
@@ -92,6 +102,9 @@ export const getAllServicos = async () => {
   try {
     await db.$connect()
     const posts = await db.post.findMany({
+      orderBy: {
+          date: 'desc'
+        },
       where: {
         role: Role.AJUDANTE
       }
@@ -256,4 +269,14 @@ export const updatePost = async (postId: string, clerkId: string, values: z.infe
       success: 'Post atualizado com sucesso'
     }
 
+}
+
+export const getAllPostsNumber = async () => {
+  try {
+    await db.$connect()
+    const posts = await db.post.count()
+    return posts
+  } catch (err) {
+    console.error(err)
+  }
 }

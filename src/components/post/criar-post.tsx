@@ -16,17 +16,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePostSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
 import { useUser } from "@clerk/nextjs";
-import { useUserRole } from "@/hooks/useUserRole";
 import { Role } from "@prisma/client";
 import { createPost } from "@/actions/post";
 
-export const CriarPostForm = () => {
+interface CriarPostFormProps {
+  tipo: "AJUDANTE" | "AJUDADO";
+}
+
+export const CriarPostForm = ({ tipo }: CriarPostFormProps) => {
   const { user } = useUser();
-  const role = useUserRole(user?.id as string);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSucces] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -66,7 +68,7 @@ export const CriarPostForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {role === Role.AJUDANTE
+                      {tipo === Role.AJUDANTE
                         ? "Serviço oferecido"
                         : "Serviço necessitado"}
                     </FormLabel>
@@ -90,7 +92,7 @@ export const CriarPostForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {role === Role.AJUDANTE
+                      {tipo === Role.AJUDANTE
                         ? "Decreva o seu serviço"
                         : "Decreva a sua necessidade"}
                     </FormLabel>
@@ -136,6 +138,14 @@ export const CriarPostForm = () => {
           </form>
         </Form>
       </CardContent>
+      {tipo === Role.AJUDADO && (
+        <CardFooter className="text-xs text-left flex flex-row gap-1 items-start">
+          <div>*</div>
+          <div>
+            Lembre-se de excluir seu pedido quando sua necessidade for atendida.
+          </div>
+        </CardFooter>
+      )}
     </Card>
   );
 };
