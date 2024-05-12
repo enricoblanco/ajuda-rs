@@ -1,18 +1,16 @@
 import {
-  getAllPedidos,
   getAllPostsNumber,
-  getAllServicos,
   getPedidos,
-  getPosts,
   getServicos,
   searchPedidos,
   searchServicos,
 } from "@/actions/post";
-import { getUserById } from "@/actions/user";
+import { getUserByClerkId, getUserById } from "@/actions/user";
 import { PostComponent } from "@/components/post";
 import { Procurar } from "@/components/procurar/procruar";
 import { PostInterface } from "./types";
 import { PaginationComponent } from "../pagination/pagination";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const PostPageComponent = async ({
   searchParams,
@@ -21,6 +19,9 @@ export const PostPageComponent = async ({
   searchParams: { search: string; page: string };
   tipo: "pedidos" | "servicos";
 }) => {
+  const userClerk = await currentUser();
+  const user = await getUserByClerkId(userClerk?.id as string);
+
   const getUserName = async (id: string) => {
     const user = await getUserById(id);
     return user?.name as string;
@@ -58,6 +59,7 @@ export const PostPageComponent = async ({
           return (
             <div className="mx-12 md:mx-44" key={post.id}>
               <PostComponent
+                isEditable={user?.id === post.authorId}
                 body={post.body}
                 title={post.title}
                 contact={post.contact}

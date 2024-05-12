@@ -68,7 +68,7 @@ export const Navbar = () => {
       <Sheet>
         <div
           data-auth={isAuth}
-          className="w-full data-[auth=true]:justify-end md:w-auto flex justify-between md:justify-start"
+          className="w-full data-[auth=true]:justify-end md:w-auto flex justify-between"
         >
           {!isAuth && (
             <Button
