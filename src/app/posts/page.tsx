@@ -21,28 +21,26 @@ const PostPage = async ({
     return user?.name as string;
   };
   return (
-    <div className="my-6 flex flex-col gap-y-6 w-full pb-12">
-      <div className="flex flex-col gap-y-4">
-        {posts?.map((post) => (
-          <div className="mx-12 md:mx-44" key={post.id}>
-            <PostComponent
-              body={post.body}
-              title={post.title}
-              contact={post.contact}
-              date={post.date}
-              id={post.id}
-              nome={getUserName(post.authorId) as unknown as string}
-              isEditable={user?.id === post.authorId}
-            />
-          </div>
-        ))}
-        <div className="flex absolute bottom-6 w-full justify-center">
-          <PaginationComponent
-            totalPosts={postsNumber as number}
-            page="posts"
-            currentPage={page}
+    <div className="flex flex-col gap-y-4">
+      {posts?.map((post) => (
+        <div className="mx-12 md:mx-44" key={post.id}>
+          <PostComponent
+            body={post.body}
+            title={post.title}
+            contact={post.contact}
+            date={post.date}
+            id={post.id}
+            nome={getUserName(post.authorId) as unknown as string}
+            isEditable={user?.id === post.authorId}
           />
         </div>
+      ))}
+      <div className="flex absolute bottom-6 w-full justify-center">
+        <PaginationComponent
+          totalPosts={postsNumber as number}
+          page="posts"
+          currentPage={page}
+        />
       </div>
     </div>
   );

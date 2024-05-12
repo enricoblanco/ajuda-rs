@@ -51,7 +51,7 @@ export const PostPageComponent = async ({
   const postsNumber = await getAllPostsNumber();
 
   return (
-    <div className="my-6 flex flex-col gap-y-6 w-full pb-12">
+    <>
       <Procurar tipo={tipo} />
       <div className="flex flex-col gap-y-4">
         {searched?.map((post) => {
@@ -77,6 +77,6 @@ export const PostPageComponent = async ({
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };

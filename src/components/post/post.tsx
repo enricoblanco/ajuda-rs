@@ -46,7 +46,7 @@ export const PostComponent = ({
     />
   ) : (
     <Card className="w-full shadow-md">
-      <CardContent className="">
+      <CardContent>
         <div className="flex flex-col gap-y-4 text-left py-2">
           <div className="flex flex-col gap-y-1">
             <h1 className="text-2xl font-semibold">{title}</h1>
