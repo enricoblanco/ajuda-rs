@@ -13,6 +13,6 @@ Estou honrado em apresentar o AjudaRS, uma aplicação que desenvolvi para auxil
 - **Reparos**: Assistência com consertos e reconstrução de propriedades danificadas.
 - **Transporte**: Facilitação de deslocamentos seguros e eficientes.
 
-Visite [ajuda-rs.com](http://ajuda-rs.com) para saber mais sobre como estamos ajudando a reconstruir vidas e comunidades afetadas por essa tragédia.
+Visite [ajuda-rs.com](https://ajuda-rs-one.vercel.app/) para saber mais sobre como estamos ajudando a reconstruir vidas e comunidades afetadas por essa tragédia.
 
 Juntos, vamos estender uma mão amiga onde ela é mais necessária.
